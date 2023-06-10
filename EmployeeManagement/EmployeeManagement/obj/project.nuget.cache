@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "ed3kRNQV0Q+t8n7azWyo92yOVqXetlnahx7avN7ZCBw6f/smBKl2kr3Nfeu7VjGf7+OccEaUaltNlrO0GxjM8Q==",
+  "dgSpecHash": "sAtFx3FK0GAZOzEgjrdH/MEvcr+zP40kHW8CcCYVlDi3XifIXjE/pZZd2gkHrS32U6D7xhonDrtenz2pxQfVfw==",
   "success": true,
   "projectFilePath": "C:\\Users\\karthik.amaresh\\OneDrive - Neudesic\\Desktop\\Q2\\EmployeeManagement\\EmployeeManagement\\EmployeeManagement\\EmployeeManagement.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\karthik.amaresh\\.nuget\\packages\\fluentvalidation\\11.5.2\\fluentvalidation.11.5.2.nupkg.sha512",
     "C:\\Users\\karthik.amaresh\\.nuget\\packages\\mediatr\\12.0.1\\mediatr.12.0.1.nupkg.sha512",
     "C:\\Users\\karthik.amaresh\\.nuget\\packages\\mediatr.contracts\\2.0.1\\mediatr.contracts.2.0.1.nupkg.sha512",
     "C:\\Users\\karthik.amaresh\\.nuget\\packages\\mediatr.extensions.microsoft.dependencyinjection\\11.1.0\\mediatr.extensions.microsoft.dependencyinjection.11.1.0.nupkg.sha512",

@@ -29,3 +29,4 @@ C:\Users\karthik.amaresh\OneDrive - Neudesic\Desktop\Q2\EmployeeManagement\Emplo
 C:\Users\karthik.amaresh\OneDrive - Neudesic\Desktop\Q2\EmployeeManagement\EmployeeManagement\EmployeeManagement\obj\Debug\net6.0\EmployeeManagement.pdb
 C:\Users\karthik.amaresh\OneDrive - Neudesic\Desktop\Q2\EmployeeManagement\EmployeeManagement\EmployeeManagement\obj\Debug\net6.0\EmployeeManagement.genruntimeconfig.cache
 C:\Users\karthik.amaresh\OneDrive - Neudesic\Desktop\Q2\EmployeeManagement\EmployeeManagement\EmployeeManagement\obj\Debug\net6.0\ref\EmployeeManagement.dll
+C:\Users\karthik.amaresh\OneDrive - Neudesic\Desktop\Q2\EmployeeManagement\EmployeeManagement\EmployeeManagement\bin\Debug\net6.0\FluentValidation.dll

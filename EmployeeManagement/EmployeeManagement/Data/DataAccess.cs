@@ -87,7 +87,7 @@ namespace EmployeeManagement.Data
         {
             Employee employeeDetails = _employees.FirstOrDefault(x => x.id == id);
             _employees.Remove(employeeDetails);
-            if(_employees.FirstOrDefault(x => x.id == id) == null)
+            if(employeeDetails != null)
             {
                 return true;
             }
