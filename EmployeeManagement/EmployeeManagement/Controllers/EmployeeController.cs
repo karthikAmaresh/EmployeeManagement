@@ -5,6 +5,7 @@ using EmployeeManagement.Validators;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System.Net.Mail;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -16,26 +17,27 @@ namespace EmployeeManagement.Controllers
     public class EmployeeController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly ILogger<EmployeeController> _logger;
 
-        public EmployeeController(IMediator mediator)
+        public EmployeeController(IMediator mediator , ILogger<EmployeeController> logger)
         {
             _mediator = mediator;
+            _logger = logger;
         }
         // GET: api/<EmployeeController>
         [HttpGet]
         public async Task<List<Employee>> GetEmployees()
         {
-            return await _mediator.Send(new GetEmployeeListQuery());
+                return await _mediator.Send(new GetEmployeeListQuery());
+            
         }
 
         // GET api/<EmployeeController>/5
         [HttpGet("{id}")]
+        [ServiceFilter(typeof(ValidateEmployeeExistance))]
+
         public async Task<IActionResult> GetEmployeeById(int id)
         {
-            if(id <= 0)
-            {
-                return new BadRequestResult();
-            }
             var result = _mediator.Send(new GetEmployeeByIdQuery(id));
             return new OkObjectResult(result);
         }
@@ -49,6 +51,8 @@ namespace EmployeeManagement.Controllers
             var validationResult = validate.Validate(command);
             if (validationResult.IsValid)
             {
+                try
+                {
                 if (command.company != null
                 && command.email != null)
                 {
@@ -68,6 +72,12 @@ namespace EmployeeManagement.Controllers
                 }
                 var result = _mediator.Send(command);
                 return new OkObjectResult(result);
+            }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, $"Exception caught while adding employee: {ex.Message}");
+                    return new BadRequestResult();
+                }
             }
             else
             {
@@ -77,7 +87,7 @@ namespace EmployeeManagement.Controllers
 
         // PUT api/<EmployeeController>/5
         [HttpPut]
-        [ServiceFilter(typeof(ValidationFilter))]
+        [ServiceFilter(typeof(ValidateEmployeeOnUpdate))]
         public async Task<IActionResult> UpdateEmployee( [FromBody] UpdateEmployeeCommand command)
         {
 
@@ -85,29 +95,33 @@ namespace EmployeeManagement.Controllers
             var validationResult = validate.Validate(command);
             if (validationResult.IsValid)
             {
-                if (command.company != null
-                && command.email != null)
+                try
                 {
-                    var address = new System.Net.Mail.MailAddress(command.email);
-                    var emailDomain = address.Host;
-
-                    var isDomainExists = emailDomain.Equals(command.company + ".com", StringComparison.OrdinalIgnoreCase);
-                    if (!isDomainExists)
+                    if (command.company != null
+                    && command.email != null)
                     {
-                        ModelState.AddModelError(nameof(Employee.email), "please provide email provided by company domain!");
-                    }
+                        var address = new System.Net.Mail.MailAddress(command.email);
+                        var emailDomain = address.Host;
 
+                        var isDomainExists = emailDomain.Equals(command.company + ".com", StringComparison.OrdinalIgnoreCase);
+                        if (!isDomainExists)
+                        {
+                            ModelState.AddModelError(nameof(Employee.email), "please provide email provided by company domain!");
+                        }
+
+                    }
+                    if (!ModelState.IsValid)
+                    {
+                        return UnprocessableEntity(ModelState);
+                    }
+                    var result = _mediator.Send(command);
+                    return new OkObjectResult(result);
                 }
-                if (!ModelState.IsValid)
+                catch (Exception ex)
                 {
-                    return UnprocessableEntity(ModelState);
-                }
-                if (command.id <= 0)
-                {
+                    _logger.LogError(ex, $"Exception caught while Updating employee : {ex.Message}");
                     return new BadRequestResult();
                 }
-                var result = _mediator.Send(command);
-                return new OkObjectResult(result);
             }
             else
             {
@@ -121,9 +135,16 @@ namespace EmployeeManagement.Controllers
 
         public async Task<IActionResult> DeleteEmployee(int id)
         {
-            
+            try
+            {
                 var result = _mediator.Send(new DeleteEmployeeById(id));
                 return new OkObjectResult(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Exception caught while removing employee: {ex.Message}");
+                return new BadRequestResult();
+            }
         }
     }
 }

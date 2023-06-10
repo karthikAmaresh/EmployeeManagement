@@ -17,6 +17,11 @@ namespace EmployeeManagement.Validators
             if (context.ActionArguments.ContainsKey("id"))
             {
                 id = (int)context.ActionArguments["id"];
+                if(id == 0)
+                {
+                    context.Result = new BadRequestResult();
+                    return;
+                }
             }
             else
             {
