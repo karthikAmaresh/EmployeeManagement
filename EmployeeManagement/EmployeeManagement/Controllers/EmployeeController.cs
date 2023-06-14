@@ -87,8 +87,7 @@ namespace EmployeeManagement.Controllers
 
         // PUT api/<EmployeeController>/5
         [HttpPut]
-        [ServiceFilter(typeof(ValidateEmployeeOnUpdate))]
-        public async Task<IActionResult> UpdateEmployee( [FromBody] UpdateEmployeeCommand command)
+        public async Task<IActionResult> UpdateEmployee(UpdateEmployeeCommand command)
         {
 
             var validate = new UpdateEmployeeEmailVaidator();

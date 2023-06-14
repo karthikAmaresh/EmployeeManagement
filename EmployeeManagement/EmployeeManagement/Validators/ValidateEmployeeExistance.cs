@@ -1,4 +1,4 @@
-﻿using EmployeeManagement.Data;
+﻿using EmployeeManagement.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -6,10 +6,11 @@ namespace EmployeeManagement.Validators
 {
     public class ValidateEmployeeExistance: IActionFilter 
     {
-        private readonly IDataAccess _dataAccess;
-        public ValidateEmployeeExistance(IDataAccess dataAccess)
+        private readonly IEmployeeService _employeeService;
+
+        public ValidateEmployeeExistance(IEmployeeService employeeService)
         {
-            _dataAccess = dataAccess;
+            _employeeService = employeeService;
         }
         public void OnActionExecuting(ActionExecutingContext context)
         {
@@ -28,7 +29,7 @@ namespace EmployeeManagement.Validators
                 context.Result = new BadRequestObjectResult("Bad id parameter");
                 return;
             }
-            var employees = _dataAccess.GetEmployees();
+            var employees = _employeeService.GetEmployees();
             var entity = employees.SingleOrDefault(x => x.id.Equals(id));
             if (entity == null)
             {

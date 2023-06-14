@@ -1,17 +1,18 @@
-﻿using EmployeeManagement.Data;
-using Microsoft.AspNetCore.Mvc.Filters;
+﻿using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
 using System.Windows.Input;
 using EmployeeManagement.Commands;
+using EmployeeManagement.Services;
 
 namespace EmployeeManagement.Validators
 {
     public class ValidateEmployeeOnUpdate : IActionFilter
     {
-        private readonly IDataAccess _dataAccess;
-        public ValidateEmployeeOnUpdate(IDataAccess dataAccess)
+        private readonly IEmployeeService _employeeService;
+
+        public ValidateEmployeeOnUpdate(IEmployeeService employeeService)
         {
-            _dataAccess = dataAccess;
+            _employeeService = employeeService;
         }
         public void OnActionExecuting(ActionExecutingContext context)
         {
@@ -22,9 +23,8 @@ namespace EmployeeManagement.Validators
                     context.Result = new BadRequestResult();
                     return;
                 }            
-            var employees = _dataAccess.GetEmployees();
-            var entity = employees.SingleOrDefault(x => x.id.Equals(command.id));
-            if (entity == null)
+            var employee = _employeeService.GetEmployee(command.id);
+            if (employee == null)
             {
                 context.Result = new NotFoundResult();
                 return;

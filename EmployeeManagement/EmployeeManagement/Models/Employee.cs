@@ -4,6 +4,7 @@ namespace EmployeeManagement.Models
 {
     public class Employee
     {
+        [Key]
         public int id { get; set; }
         public int age { get; set; }
         [Required]

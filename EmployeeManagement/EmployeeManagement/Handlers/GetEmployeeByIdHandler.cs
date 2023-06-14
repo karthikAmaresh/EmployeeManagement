@@ -1,22 +1,22 @@
-﻿using EmployeeManagement.Data;
-using EmployeeManagement.Models;
+﻿using EmployeeManagement.Models;
 using EmployeeManagement.Queries;
+using EmployeeManagement.Services;
 using MediatR;
 
 namespace EmployeeManagement.Handlers
 {
     public class GetEmployeeByIdHandler : IRequestHandler<GetEmployeeByIdQuery, Employee>
     {
-        private readonly IDataAccess _dataAccess;
+        private readonly IEmployeeService _employeeService;
 
-        public GetEmployeeByIdHandler(IDataAccess dataAccess)
+        public GetEmployeeByIdHandler(IEmployeeService employeeService)
         {
-            _dataAccess = dataAccess;
+            _employeeService = employeeService;
         }
 
         public Task<Employee> Handle(GetEmployeeByIdQuery request , CancellationToken cancellationToken)
         {
-            return Task.FromResult(_dataAccess.GetEmployee(request.EmployeeId));
+            return Task.FromResult(_employeeService.GetEmployee(request.EmployeeId));
         }
     }
 }

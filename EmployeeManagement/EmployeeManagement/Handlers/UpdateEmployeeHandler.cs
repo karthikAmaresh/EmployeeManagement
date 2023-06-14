@@ -1,21 +1,21 @@
 ﻿using EmployeeManagement.Commands;
-using EmployeeManagement.Data;
 using EmployeeManagement.Models;
+using EmployeeManagement.Services;
 using MediatR;
 
 namespace EmployeeManagement.Handlers
 {
     public class UpdateEmployeeHandler : IRequestHandler<UpdateEmployeeCommand, Employee>
     {
-        private readonly IDataAccess _dataAccess;
+        private readonly IEmployeeService _employeeService;
 
-        public UpdateEmployeeHandler(IDataAccess dataAccess)
+        public UpdateEmployeeHandler(IEmployeeService employeeService)
         {
-            _dataAccess = dataAccess;
+            _employeeService = employeeService;
         }
         public Task<Employee> Handle(UpdateEmployeeCommand command, CancellationToken cancellationToken)
         {
-            return Task.FromResult(_dataAccess.UpdateEmployee(command));
+            return Task.FromResult(_employeeService.UpdateEmployee(command));
         }
     }
 }

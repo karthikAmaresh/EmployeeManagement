@@ -1,22 +1,22 @@
-﻿using EmployeeManagement.Data;
-using EmployeeManagement.Models;
+﻿using EmployeeManagement.Models;
 using EmployeeManagement.Queries;
+using EmployeeManagement.Services;
 using MediatR;
 
 namespace EmployeeManagement.Handlers
 {
     public class GetEmployeeListHandler : IRequestHandler<GetEmployeeListQuery , List<Employee>>
     {
-        private readonly IDataAccess _dataAccess;
+        private readonly IEmployeeService _employeeService;
 
-        public GetEmployeeListHandler(IDataAccess dataAccess)
+        public GetEmployeeListHandler(IEmployeeService employeeService)
         {
-            _dataAccess = dataAccess;
+            _employeeService = employeeService;
         }
 
         public Task<List<Employee>> Handle(GetEmployeeListQuery request , CancellationToken cancellationToken)
         {
-            return Task.FromResult(_dataAccess.GetEmployees());
+            return Task.FromResult(_employeeService.GetEmployees());
         }
     }
 }
